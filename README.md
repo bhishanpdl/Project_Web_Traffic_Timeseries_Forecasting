@@ -8,7 +8,7 @@ the raw dataset here in github. (file size=284.6MB)
 - The project is divided into multiple parts:
   + ARIMA (Auto Regressive Integrated Moving Average)
   + VAR (Vector Auto Regression) (for multiple-timesries)
-  + Regressors (Linenar, Lasso, Ridge, xgbgregressor)
+  + Regressors (Linenar, Lasso, Ridge, xgbregressor)
   + fbprophet
   + Deep Learning (LSTM and GRU) (Long Short-term Memory and Gated Recurrent Unit)
 
