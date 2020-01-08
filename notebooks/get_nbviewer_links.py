@@ -3,7 +3,7 @@ import glob
 
 github = "https://github.com/"
 user = "bhishanpdl"
-project = "/Project_House_Price_Prediction"
+project = "/Project_Web_Traffic_Timeseries_Forecasting"
 path = "/blob/master/notebooks/"
 nbview = "https://nbviewer.jupyter.org/github/"
 
@@ -24,23 +24,3 @@ with open('nb_links.md','w') as fo:
 
         line = """| {notebook}  | [ipynb]({gh_link}), [rendered]({nb_link})  |   | [Bhishan Poudel](https://bhishanpdl.github.io/)  |""".format(notebook=notebook,nb_link=nb_link,gh_link=gh_link)
         fo.write(line + '\n')
-
-
-"""
-notebook: a01_classification_eda.ipynb
-github link: https://github.com/bhishanpdl/Project_Fraud_Detection/blob/master/notebooks/a01_classification_eda.ipynb
-
-nbviewer: https://nbviewer.jupyter.org/github/bhishanpdl/Project_Fraud_Detection/blob/master/notebooks/a01_classification_eda.ipynb
-
-github = "https://github.com/"
-user = "bhishanpdl"
-project = "/Project_Fraud_Detection"
-path = "/blob/master/notebooks/"
-notebook = "a01_classification_eda.ipynb"
-
-nbview = "https://nbviewer.jupyter.org/github/"
-
-gh_link   = github + user  + project + path + notebook
-nb_link   = nbview + user + project + path + notebook
-
-""";
