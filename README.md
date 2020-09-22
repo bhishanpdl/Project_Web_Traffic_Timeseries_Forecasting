@@ -135,7 +135,7 @@ model is SMAPE (Symmetric Mean Absolute Percentage Error).
 The formula for SMAPE (Symmetric Mean Absolute Percentage Error) is given below:  
 
 $$
-S M A P E=\frac{100 \%}{n} \sum_{t=1}^{n} \frac{\left|F_{t}-A_{t}\right|}{\left(\left|A_{t}\right|+\left|F_{t}\right|\right) / 2}
+S M A P E=\frac{100 \%}{n} \sum_{t=1}^{n} \frac{\left|F_{t}-A_{t}\right|}{\left(\left|F_{t}\right|+\left|A_{t}\right|\right) / 2}
 $$
 
 Where, F is forecast and A is the actual value of time series at given time t.
