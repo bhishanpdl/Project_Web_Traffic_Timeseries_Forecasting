@@ -1,14 +1,13 @@
 # Project: Time Series Forecasting for Wikipedia daily visits dataset
 
 # Project Structure
-- Raw input dataset is taken from [kaggle](https://www.kaggle.com/c/web-traffic-time-series-forecasting/data). The data set is huge I do not have
-the raw dataset here in github. (file size=284.6MB)
+- Raw input dataset is taken from [kaggle](https://www.kaggle.com/c/web-traffic-time-series-forecasting/data). The data set is larger than github allowed size, I do not have the raw dataset here in github. (file size=284.6MB)
 - `notebooks` directory has all the notebooks for exploratory data analysis,
    visualization, modelling and model interpretation.
 - The project is divided into multiple parts:
   + ARIMA (Auto Regressive Integrated Moving Average)
   + VAR (Vector Auto Regression) (for multiple-timesries)
-  + Regressors (Linenar, Lasso, Ridge, xgbregressor)
+  + Regressors (Linear, Lasso, Ridge, XGBRegressor)
   + fbprophet
   + Deep Learning (LSTM and GRU) (Long Short-term Memory and Gated Recurrent Unit)
 
