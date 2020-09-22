@@ -109,16 +109,16 @@ For time series, probably ARIMA (or, SARIMAX) is the most popular algorithm to
 try on. I used both the usual arima model from `statsmodels` and also a dedicated
 library `pdarima` to fit the arima model. The details are explained in the notebook.
 
-After doing arima, modelling I was curious what will VAR model do with the
+After doing ARIMA modelling, I was curious what will VAR model do with this
 wikipedia time series. For VAR method to be used the columns of dataset must be
 related to each other like opening and closing of the stock. However, just for
-the puprpose of the algorithm implentation and fiddling with the model, I looked
+the purpose of the algorithm implentation and fiddling with the model, I looked
 at the top 5 pages per language and fitted the model.
 
-Then, I went back in time and wanted to see how will the usual sklean models
+Then, I went back in time and wanted to see how will the usual sklearn models
 like linear regression, lasso and ridge will do with the time series data. I also
-did some ensemble learning models like xgbregressor. xgbregressor did pretty good
-and gave me the smape value of 6.65 for the training data. For a random page
+did some ensemble learning models like xgbregressor. XGBRegressor did pretty good
+and gave me the SMAPE value of 6.65 for the training data. For a random page
  (Now You See Me Spanish page), I got the smape of 21.68 on the training data.
 
 For time series forecasting, one of the popular model is prophet open sourced by
