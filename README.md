@@ -43,7 +43,7 @@ NOTE:
 For this dataset, missing data is represented by 0.
 
 Time series selected for modelling:
-ARMIMA: most visited page ==> Special:Search_en.wikipedia.org_desktop_all-agents
+ARIMA: most visited page ==> Special:Search_en.wikipedia.org_desktop_all-agents
                               visited = 675606021
 
 VAR: VAR needs correlated times series like opening and closing of stock.
