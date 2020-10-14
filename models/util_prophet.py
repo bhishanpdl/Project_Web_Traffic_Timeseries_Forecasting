@@ -21,8 +21,8 @@ from numba import jit
 import math
 
 # https://www.kaggle.com/cpmpml/smape-weirdness
-@jit
-def smape(y_true, y_pred):
+@jit(nopython=True)
+def get_smape(y_true, y_pred):
     A = y_true.to_numpy().ravel()
     F = y_pred.to_numpy().ravel()[:len(A)]
     return ( 200.0/len(A) * np.sum(  np.abs(F - A) / 
@@ -31,8 +31,8 @@ def smape(y_true, y_pred):
 
 
 # https://www.kaggle.com/c/web-traffic-time-series-forecasting/discussion/37232
-@jit
-def smape_fast(y_true, y_pred):
+@jit(nopython=True)
+def get_smape_fast(y_true, y_pred):
     """Fast implementation of SMAPE.
     
     Parameters
@@ -59,10 +59,7 @@ def smape_fast(y_true, y_pred):
 def safe_median(s):
     return np.median([x for x in s if ~np.isnan(x)])
 
-def mean_absolute_percentage_error(y_true, y_pred):
-    """Calculate the MAPE.
-    
-    """
+def get_mape(y_true, y_pred):
     return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
 
 def plot_actual_forecast_mpl(df, forecast_str_lst, forecast_lst):

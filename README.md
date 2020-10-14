@@ -12,7 +12,6 @@
   + Deep Learning (LSTM and GRU) (Long Short-term Memory and Gated Recurrent Unit)
 
 # Data Description
-
 Data source: [kaggle](https://www.kaggle.com/c/web-traffic-time-series-forecasting/data)
 The first column is the name of the page and rest 550 columns are visited date.
 
@@ -57,8 +56,27 @@ fbprophet: For facebook prophet time series modelling module, I used a random
 
 deep-learning: For deep learning algorithms like LSTM and GRU, I used the same
                time series as I used in fbprophet.
-
 ```
+# Best Result for Prince Musician Timeseries
+The best smape for given timeseries was given by xgboost using features from tsfresh.
+
+# Results for Prince Musician Timeseries
+
+| Model | Description | MAPE | SMAPE | RMSE | ME | MAE | MPE | CORR | MINMAX | ACF1 |
+| :---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|
+| xgb | tsfresh | 1 | 0.6356 | 337 | 43 | 115 | 0 | 0.9991 | 0.0063 | -0.2886 |
+| xgb | default | 1 | 1.4308 | 453 | 9 | 224 | 0 | 0.9978 | 0.0141 | -0.3971 |
+| XGBRegressor | default | 18 | 18.2580 | 4,513 | 687 | 2,331 | 0 | 0.6643 | 0.1565 | 0.1207 |
+| LassoCV | ts_split=3 | 266 | 110.8415 | 25,829 | -25,336 | 25,537 | -3 | 0.5769 | 0.7062 | -0.4231 |
+| RidgeCV | ts_split=3 | 261 | 118.8720 | 31,289 | -15,694 | 25,228 | -2 | -0.0255 | 0.8816 | 0.6251 |
+| LinearRegression | default | 365 | 135.3122 | 43,579 | -17,255 | 35,357 | -2 | -0.1236 | 1.2735 | 0.6457 |
+| LinearRegression | scaled | 33,841,890 | 199.9984 | 4,378,715,364 | -3,640,663,624 | 3,640,663,624 | -338,419 | 0.5725 | 1.0000 | 0.0784 |
+| lstm | lag=2 | 4,069,330 | 199.9888 | 433,298,756 | -433,297,312 | 433,297,312 | -40,693 | -0.2744 | 1.0000 | -0.0243 |
+| lstm | minmax-scaling,lag=2 | 948,275,100 | 200.0000 | 4,879 | -4,879 | 4,879 | -9,482,751 | 0.6840 | 1.0000 | 0.8131 |
+| gru | lag=2 | 1,799,176,200 | 200.0000 | 191,976,720,421 | -191,756,828,672 | 191,756,828,672 | -17,991,762 | 0.0502 | 1.0000 | -0.0145 |
+| gru | minmax-scaling,lag=2 | 5,467,382,000 | 200.0000 | 29,285 | -29,048 | 29,048 | -54,673,820 | 0.5976 | 1.0000 | 0.3026 |
+
+
 
 # Part 1: Data Cleaning and Feature Engineering
 The data set is super clean, I did not have to do anything. One thing to note
@@ -106,7 +124,7 @@ the time series is stationary.
 # Part 4: Modelling
 For time series, probably ARIMA (or, SARIMAX) is the most popular algorithm to
 try on. I used both the usual arima model from `statsmodels` and also a dedicated
-library `pdarima` to fit the arima model. The details are explained in the notebook.
+library `pmdarima` to fit the arima model. The details are explained in the notebook.
 
 After doing ARIMA modelling, I was curious what will VAR model do with this
 wikipedia time series. For VAR method to be used the columns of dataset must be
@@ -132,7 +150,7 @@ LSTM did pretty well and gave me smape of 20.34 for the test dataset.
 One of the most popular metric to determine the performance of time series
 model is SMAPE (Symmetric Mean Absolute Percentage Error).
 
-The formula for SMAPE (Symmetric Mean Absolute Percentage Error) is given below:  
+The formula for SMAPE (Symmetric Mean Absolute Percentage Error) is given below:
 
 $$
 S M A P E=\frac{100 \%}{n} \sum_{t=1}^{n} \frac{\left|F_{t}-A_{t}\right|}{\left(\left|F_{t}\right|+\left|A_{t}\right|\right) / 2}
@@ -144,7 +162,7 @@ Python implementation:
 ```python
 def smape(A, F):
     F = A[:len(A)]
-    return ( 200.0/len(A) * np.sum(  np.abs(F - A) / 
+    return ( 200.0/len(A) * np.sum(  np.abs(F - A) /
                                   (np.abs(A) + np.abs(F) + np.finfo(float).eps))
            )
 ```
@@ -152,12 +170,12 @@ def smape(A, F):
 Despite the name Symmetric, the smape is not actually symmetric. Take this
 example from [wikipedia](https://www.wikiwand.com/en/Symmetric_mean_absolute_percentage_error) for an example:
 
-The SMAPE is not symmetric since over- and under-forecasts are not treated equally. 
+The SMAPE is not symmetric since over- and under-forecasts are not treated equally.
 This is illustrated by the following example by applying the SMAPE formula:
 
 ```
-Over-forecasting: At = 100 and Ft = 110 give SMAPE = 4.76%
-Under-forecasting: At = 100 and Ft = 90 give SMAPE = 5.26%.
+Over-forecasting : At = 100 and Ft = 110 gives SMAPE = 4.76%
+Under-forecasting: At = 100 and Ft = 90  gives SMAPE = 5.26%.
 ```
 
  # Some of the EDA results
@@ -167,3 +185,5 @@ Under-forecasting: At = 100 and Ft = 90 give SMAPE = 5.26%.
 ![](reports/figures/visits_per_dayofmonth_per_dayofweek.png)
 ![](reports/figures/visits_per_month_per_weekday.png)
 
+# Useful Resources for Timeseries Analysis
+- https://github.com/MaxBenChrist/awesome_time_series_in_python
