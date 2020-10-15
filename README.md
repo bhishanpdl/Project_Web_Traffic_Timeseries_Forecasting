@@ -75,7 +75,11 @@ The best smape for given timeseries was given by xgboost using features from tsf
 | lstm | minmax-scaling,lag=2 | 948,275,100 | 200.0000 | 4,879 | -4,879 | 4,879 | -9,482,751 | 0.6840 | 1.0000 | 0.8131 |
 | gru | lag=2 | 1,799,176,200 | 200.0000 | 191,976,720,421 | -191,756,828,672 | 191,756,828,672 | -17,991,762 | 0.0502 | 1.0000 | -0.0145 |
 | gru | minmax-scaling,lag=2 | 5,467,382,000 | 200.0000 | 29,285 | -29,048 | 29,048 | -54,673,820 | 0.5976 | 1.0000 | 0.3026 |
-
+| fbprophet | seasonality_after_cap_floor | 65 | 100.4473 | 9,009 | 3,603 | 7,426 | 0 | 0.2990 | 0.5764 | 0.4837 |
+| fbprophet | seasonality_before_cap_floor | 423 | 139.6339 | 54,487 | -3,904 | 44,547 | -0 | 0.1662 | 2.3876 | 0.5637 |
+| fbprophet | after_cap_floor | 82 | 147.0780 | 12,655 | 7,658 | 10,089 | 1 | -0.0811 | 0.7741 | 0.4794 |
+| fbprophet | default | 437 | 171.8289 | 54,429 | 25,011 | 48,699 | 2 | -0.2529 | 3.3718 | 0.4491 |
+| fbprophet | before_cap_floor | 437 | 171.8289 | 54,429 | 25,011 | 48,699 | 2 | -0.2529 | 3.3718 | 0.4491 |
 
 
 # Part 1: Data Cleaning and Feature Engineering
