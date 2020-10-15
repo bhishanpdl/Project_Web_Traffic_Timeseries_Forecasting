@@ -182,12 +182,5 @@ Over-forecasting : At = 100 and Ft = 110 gives SMAPE = 4.76%
 Under-forecasting: At = 100 and Ft = 90  gives SMAPE = 5.26%.
 ```
 
- # Some of the EDA results
-![](reports/figures/2016_sample001_monthly_visits.png)
-![](reports/figures/daily_visits.png)
-![](reports/figures/visits_by_weekday.png)
-![](reports/figures/visits_per_dayofmonth_per_dayofweek.png)
-![](reports/figures/visits_per_month_per_weekday.png)
-
 # Useful Resources for Timeseries Analysis
 - https://github.com/MaxBenChrist/awesome_time_series_in_python
