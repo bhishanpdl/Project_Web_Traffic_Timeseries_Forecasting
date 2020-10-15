@@ -20,47 +20,90 @@ from plotly.offline import plot, iplot, init_notebook_mode
 from numba import jit
 import math
 
-# https://www.kaggle.com/cpmpml/smape-weirdness
-@jit(nopython=True)
-def get_smape(y_true, y_pred):
-    A = y_true.to_numpy().ravel()
-    F = y_pred.to_numpy().ravel()[:len(A)]
-    return ( 200.0/len(A) * np.sum(  np.abs(F - A) / 
-                                  (np.abs(A) + np.abs(F) + np.finfo(float).eps))
-           )
-
-
-# https://www.kaggle.com/c/web-traffic-time-series-forecasting/discussion/37232
-@jit(nopython=True)
-def get_smape_fast(y_true, y_pred):
-    """Fast implementation of SMAPE.
-    
-    Parameters
-    -------------
-    y_true: numpy array with no NaNs and non-negative
-    y_pred: numpy array with no NaNs and non-negative
-    
-    Returns
-    -------
-    out : float
-    """
-    out = 0
-    for i in range(y_true.shape[0]):
-        if (y_true[i] != None and np.isnan(y_true[i]) ==  False):
-            a = y_true[i]
-            b = y_pred[i]
-            c = a+b
-            if c == 0:
-                continue
-            out += math.fabs(a - b) / c
-    out *= (200.0 / y_true.shape[0])
-    return out
-
-def safe_median(s):
-    return np.median([x for x in s if ~np.isnan(x)])
-
 def get_mape(y_true, y_pred):
+    "Mean Absolute Percentage Error"
     return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
+
+def get_smape(y_true, y_pred):
+    "Symmetric Mean Absolute Percentage Error"
+    denominator = (np.abs(y_true) + np.abs(y_pred))
+    diff = np.abs(y_true - y_pred) / denominator
+    diff[denominator == 0] = 0.0
+    return 200 * np.mean(diff)
+
+def get_ts_eval(model_name, desc, ytest, ypreds, df_eval=None,
+                          show=False,sort_col='SMAPE'):
+    from statsmodels.tsa.stattools import acf
+
+    if df_eval is None:
+        df_eval = pd.DataFrame({'Model': [],
+                                'Description':[],
+                                'MAPE': [],
+                                'SMAPE': [],
+                                'RMSE': [],
+                                'ME': [],
+                                'MAE': [],
+                                'MPE': [],
+                                'CORR': [],
+                                'MINMAX': [],
+                                'ACF1': [],
+                                })
+
+    mape = get_mape(ytest,ypreds)   # MAPE
+    smape = get_smape(ytest,ypreds) # SMAPE
+    rmse = np.mean((ytest - ypreds)**2)**.5  # RMSE
+
+    me = np.mean(ytest - ypreds)             # ME
+    mae = np.mean(np.abs(ytest - ypreds))    # MAE
+    mpe = np.mean((ytest - ypreds)/ytest)    # MPE
+
+    corr = np.corrcoef(ytest, ypreds)[0, 1]  # corr
+
+    mins = np.amin(np.hstack([ytest[:, None],
+                              ypreds[:, None]]), axis=1)
+    maxs = np.amax(np.hstack([ytest[:, None],
+                              ypreds[:, None]]), axis=1)
+    minmax = 1 - np.mean(mins/maxs)             # minmax
+
+    acf1 = acf(ytest-ypreds, fft=False)[1]    # ACF1 (autocorrelation function)
+
+    row = [model_name, desc, mape, smape,rmse, me,mae,mpe,corr,minmax,acf1]
+
+    df_eval.loc[len(df_eval)] = row
+    df_eval = df_eval.drop_duplicates(['Model','Description'])
+    
+    asc, cmap = True, 'Greens_r'
+    
+    if sort_col == 'RMSE':
+        asc = False
+        cmap = 'Greens'
+
+    if sort_col == 'SMAPE':
+        asc = True
+        cmap = 'Greens_r'
+
+    df_eval = df_eval.sort_values(sort_col,ascending=asc)
+    df_eval = df_eval.reset_index(drop=True)
+
+    if show:
+        df_eval_style = (df_eval.style
+                         .format({'MAPE': "{:,.0f}",
+                                  'SMAPE': "{:,.4f}",
+                                  'RMSE': "{:,.0f}",
+                                  'ME': "{:,.0f}",
+                                  'MAE': "{:,.0f}",
+                                  'MPE': "{:,.0f}",
+                                  'CORR': "{:,.4f}",
+                                  'MINMAX': "{:,.4f}",
+                                  'ACF1': "{:,.4f}"
+                                 })
+                         .background_gradient(subset=[sort_col],cmap=cmap)
+                        )
+        display(df_eval_style)
+    return df_eval
+
+df_eval = None
+
 
 def plot_actual_forecast_mpl(df, forecast_str_lst, forecast_lst):
     """Plot prophet forcast.
@@ -263,5 +306,5 @@ def remove_negs_from_forecast(forecast):
     forecast['yhat'] = forecast['yhat'].clip_lower(0)
     forecast['yhat_lower'] = forecast['yhat_lower'].clip_lower(0)
     forecast['yhat_upper'] = forecast['yhat_upper'].clip_lower(0)
-    
+
     return forecast
