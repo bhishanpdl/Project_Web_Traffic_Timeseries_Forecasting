@@ -71,10 +71,10 @@ The best smape for given timeseries was given by xgboost using features from tsf
 | RidgeCV | ts_split=3 | 261 | 118.8720 | 31,289 | -15,694 | 25,228 | -2 | -0.0255 | 0.8816 | 0.6251 |
 | LinearRegression | default | 365 | 135.3122 | 43,579 | -17,255 | 35,357 | -2 | -0.1236 | 1.2735 | 0.6457 |
 | LinearRegression | scaled | 33,841,890 | 199.9984 | 4,378,715,364 | -3,640,663,624 | 3,640,663,624 | -338,419 | 0.5725 | 1.0000 | 0.0784 |
-| lstm | lag=2 | 4,069,330 | 199.9888 | 433,298,756 | -433,297,312 | 433,297,312 | -40,693 | -0.2744 | 1.0000 | -0.0243 |
-| lstm | minmax-scaling,lag=2 | 948,275,100 | 200.0000 | 4,879 | -4,879 | 4,879 | -9,482,751 | 0.6840 | 1.0000 | 0.8131 |
-| gru | lag=2 | 1,799,176,200 | 200.0000 | 191,976,720,421 | -191,756,828,672 | 191,756,828,672 | -17,991,762 | 0.0502 | 1.0000 | -0.0145 |
-| gru | minmax-scaling,lag=2 | 5,467,382,000 | 200.0000 | 29,285 | -29,048 | 29,048 | -54,673,820 | 0.5976 | 1.0000 | 0.3026 |
+| lstm | lags=2,minmax-scaler | 25 | 24.6649 | 6,524 | 353 | 3,482 | -0 | 0.6507 | 0.2056 | 0.6702 |
+| gru | lags=2 | 40 | 53.1378 | 8,700 | 5,739 | 5,739 | 0 | nan | 0.4031 | 0.6727 |
+| gru | lags=2,minmax-scaling | 58 | 83.9143 | 8,932 | 7,146 | 7,192 | 1 | 0.5818 | 0.5815 | 0.0733 |
+| lstm | lags=2 | 99 | 197.2470 | 13,684 | 12,021 | 12,021 | 1 | 0.0502 | 0.9931 | 0.6727 |
 | fbprophet | seasonality_after_cap_floor | 65 | 100.4473 | 9,009 | 3,603 | 7,426 | 0 | 0.2990 | 0.5764 | 0.4837 |
 | fbprophet | seasonality_before_cap_floor | 423 | 139.6339 | 54,487 | -3,904 | 44,547 | -0 | 0.1662 | 2.3876 | 0.5637 |
 | fbprophet | after_cap_floor | 82 | 147.0780 | 12,655 | 7,658 | 10,089 | 1 | -0.0811 | 0.7741 | 0.4794 |
@@ -156,6 +156,13 @@ model is SMAPE (Symmetric Mean Absolute Percentage Error).
 
 The formula for SMAPE (Symmetric Mean Absolute Percentage Error) is given below:
 
+```
+SMAPE =  200 * mean   abs(A-F)
+                      -----------------
+                      abs(A) + abs(F)
+
+SMAPE lies between 0 and 200, 0 is best and 200 is worst.
+```
 $$
 S M A P E=\frac{100 \%}{n} \sum_{t=1}^{n} \frac{\left|F_{t}-A_{t}\right|}{\left(\left|F_{t}\right|+\left|A_{t}\right|\right) / 2}
 $$
